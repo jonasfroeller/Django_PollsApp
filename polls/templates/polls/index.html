@@ -1,0 +1,43 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <title>Polls</title>
+</head>
+
+<body class="p-4">
+    <header class="m-3">
+        <h1>Polls</h1>
+    </header>
+
+    <main class="p-3 d-flex">
+        {% if latest_question_list %}
+        <ul class="list-group">
+            {% for question in latest_question_list %}
+
+            <li class="list-group-item"><a
+                    class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                    href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+            </li>
+
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+            <p>No polls are available.</p>
+        </div>
+        {% endif %}
+    </main>
+
+    {% include "polls/components/footer.html" %}
+</body>
+
+</html>

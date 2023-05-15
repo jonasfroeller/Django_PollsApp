@@ -1,0 +1,28 @@
+{
+    "builds": [
+        {
+            "src": "Project/wsgi.py",
+            "use": "@vercel/python"
+        }
+    ],
+    "installCommand": "pip install -r requirements.txt",
+    "buildCommand": "export SECRET_KEY=$(openssl rand -hex 32) IS_PRODUCTION_ENVIRONMENT=true && py manage.py migrate || python manage.py migrate || python3 manage.py migrate",
+    "devCommand": "py manage.py runserver || python manage.py runserver || python3 manage.py runserver",
+    "routes": [
+        {
+            "src": "^/static/(.*)$",
+            "headers": {
+                "cache-control": "public, max-age=31536000, immutable"
+            },
+            "dest": "/static/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "Project/wsgi.py"
+        }
+    ],
+    "env": {
+        "IS_PRODUCTION_ENVIRONMENT": "true",
+        "SECRET_KEY": "${SECRET_KEY}"
+    }
+}

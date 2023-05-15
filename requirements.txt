@@ -1,0 +1,5 @@
+gunicorn
+pip==23.1.2
+Django==3.2.19
+django-bootstrap5==23.1
+python-dotenv==0.21.1

@@ -1,0 +1,57 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <title>Details</title>
+</head>
+
+<body class="p-4">
+    <header class="p-3">
+        <h1>Poll Info #{{ question.id }}</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">#{{ question.id }} {{ question.question_text }}
+                </li>
+            </ol>
+        </nav>
+    </header>
+
+    <main class="container-fluid">
+        <form class="p-3 border rounded" action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h2>{{ question.question_text }}</h2>
+                </legend>
+                {% for choice in question.choice_set.all %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="choice" id="choice{{ forloop.counter }}"
+                        value="{{ choice.id }}">
+                    <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                </div>
+                {% endfor %}
+            </fieldset>
+            <button type="submit" value="Vote" class="btn btn-primary mt-4">Vote</button>
+        </form>
+
+        {% if error_message %}
+        <div class="alert alert-info" role="alert">
+            <p><strong>{{ error_message }}</strong></p>
+        </div>
+        {% endif %}
+
+    </main>
+
+    {% include "polls/components/footer.html" %}
+</body>
+
+</html>
